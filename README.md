@@ -11,11 +11,11 @@ Using the onboard environmental sensors we can calculate various measures in rel
 ### Time of Useful Consciousness (TUC)
 The period between the loss of an adequate oxygen supply (hypoxia) and the point where an individual is no longer capable of taking corrective or self-protective action. It is not the time until you pass out. It is the time until you become too cognitively impaired to save yourself. TUC is an estimate at rest, meaning any exercise will reduce the time considerably. Rapid decompression can reduce TUC by up to 50%.   
 
-Regression formula to estimate TUC created based on the data from TUC tables. (TUC in seconds, pressure in hPa) 
+Exponential regression formula to estimate TUC based on tables data. (TUC in seconds, pressure in hPa) 
 
 $$tuc_{static} = 1.837 \times 1.013^{pressure}$$
 
-Adjust for rapid decompression using the pressure rate of change. ($$\Delta P$$ in hPa/s)
+Adjustment for rapid decompression using the pressure rate of change. ($$\Delta P$$ in hPa/s)
 
 $$tuc_{dynamic} = tuc_{static} \times \max(0.5, 1.0 - \frac{\Delta P}{50})$$
 
