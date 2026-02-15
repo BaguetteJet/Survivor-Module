@@ -1,4 +1,7 @@
 #include <Arduino_LPS22HB.h> // pressure, alt temperature
+#include "Human.h"
+
+Human astronaut;
 
 // programmable variables
 float alpha = 0.6;                  // smoothing factor (0–1)
@@ -43,6 +46,9 @@ void loop() {
   // calculate rate of pressure change (hPa/s)
   float deltaTime = (currentTime - lastTime) / 1000.0;
   float rateOfChange = (lastPressure - pressure) / deltaTime; // positive = ascending
+
+  float externalTemp = -40;  // replace with sensor
+  float gForce = 2.5;        // replace with IMU
 
   // static TUC estimate based on pressure in seconds (regression formula using TUC table)
   float tucStatic;
@@ -90,6 +96,8 @@ void loop() {
     Serial.print(tucDynamic);
     Serial.println(" s ±20%");
   }
+  
+  astronaut.update(deltaTime, pressure, externalTemp, gForce);
 
   lastPressure = pressure;
   lastTime = currentTime;
