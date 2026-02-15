@@ -1,0 +1,14 @@
+Altitude (ft),Altitude (m),Pressure (mmHg),O2 %,Saturation %,Standard TUC,Rapid Decompression TUC
+0,0,149,20.9,97-99,Unlimited,Unlimited
+5000,1524,122,16.1,90-95,Unlimited,Unlimited
+10000,3048,99,13.1,85-95,Unlimited,Unlimited
+15000,4572,80,10.5,70-85,Hours,Hours
+18000,5486,70,9.2,60-70,20-30 min,10-15 min
+22000,6706,57,7.5,<70,10 min,5-6 min
+25000,7620,49,6.5,<65,3-5 min,1.5-2.5 min
+28000,8534,42,5.5,<60,2.5-3 min,1-1.5 min
+30000,9144,37,4.9,<55,1-2 min,0.5-1 min
+35000,10668,28,3.6,<50,0.5-1 min,0-15 s
+40000,12192,20,2.6,15-20 s,Nominal,Nominal
+43000,13107,16,2.1,9-12 s,Nominal,Nominal
+50000,15240,8,1.0,<12 s,Nominal,Nominal
