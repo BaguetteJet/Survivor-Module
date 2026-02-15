@@ -5,7 +5,7 @@
 class Human {
 public:
     // state
-    float bloodOxygen;      // % SpO2
+    float bloodOxygen;      // % SpO2 
     float coreTemp;         // °C
     float gDose;            // accumulated G exposure
     float timeUnconscious;  // seconds
@@ -48,22 +48,25 @@ public:
 
 //private:
 
-    // Hypoxia (Hypoxemia) model
+    // Hypoxia model
     void updateHypoxia(float dt, float pressure) {
 
         // basic blood oxygen available model
-        float P02 = pressure * 0.21; // hPa oxygen partial pressure with 21% air
-        float P50 = 40.0;             // hPa oxygen partial pressure for 50% Sp02
-        float n = 2.8;                // sigmoid function hill coefficient
-        float m = 1;               // rate of change modifier (0.02)
+        float PO2 = pressure;             // hPa barometric pressure
+        float PH2O = 62;                  // hPa water vapour pressure (62hPa at 37°C) -- UPDATE
+        float FiO2 = 0.21;                // 21% oxygen in air
 
-        // sigmoid function to get available % Sp02
-        float oxygenAvailable = 100.0 * (pow(P02, n)/(pow(P50, n) + pow(P02, n))); 
-
+        // calculate inspired oxygen partial pressure
+        float PiO2 = (PO2 - PH2O) * FiO2; // hPa
+        
+        // calculate peripheral blood oxygen saturation
+        float SpO2 = 100.0 / (1.0 + exp(-0.0201 * (PiO2 - 50.9521))); // %
+    
         // rate of change
-        float changeRate = (oxygenAvailable - bloodOxygen) * m;
+        float m = 1;               // rate of change modifier (0.02)
+        float changeRate = (SpO2 - bloodOxygen) * m;
 
-        // update blood oxygen % Sp02 level
+        // update blood oxygen % SpO2 level
         bloodOxygen += changeRate * dt;
 
         // limits
@@ -71,12 +74,16 @@ public:
         if (bloodOxygen < 0) bloodOxygen = 0;
 
         Serial.print("Oxygen: ");
-        Serial.print(oxygenAvailable);
-        Serial.println(" % P02");
+        Serial.print(PiO2);
+        Serial.println(" hPa PiO2");
+
+        Serial.print("Oxygen: ");
+        Serial.print(changeRate);
+        Serial.println(" % SpO2 rate");
         
         Serial.print("Oxygen: ");
         Serial.print(bloodOxygen);
-        Serial.println(" % Sp02");
+        Serial.println(" % SpO2");
 
         Serial.print("Core Temp: ");
         Serial.print(coreTemp);

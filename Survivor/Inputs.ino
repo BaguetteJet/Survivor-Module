@@ -1,3 +1,15 @@
+// seconds to hh:mm:ss
+String formatTime(unsigned long totalSeconds) {
+  unsigned long hours = totalSeconds / 3600;
+  unsigned long minutes = (totalSeconds % 3600) / 60;
+  unsigned long seconds = totalSeconds % 60;
+
+  char buffer[10];
+  sprintf(buffer, "%02lu:%02lu:%02lu", hours, minutes, seconds);
+
+  return String(buffer);
+}
+
 // check if valid integer
 bool isInt(String str) {
   str.trim();
@@ -85,7 +97,7 @@ void readInput() {
       Serial.println("[FAILED] refpressure invalid arg!");
     }
   } else {
-    
+
     Serial.println("[FAILED] invalid command!");
   }
 }

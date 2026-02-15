@@ -52,25 +52,26 @@ void loop() {
 
   // static TUC estimate based on pressure in seconds (regression formula using TUC table)
   float tucStatic;
-  if (pressure > 550) {
-    tucStatic = 99999999; // safe
+  if (pressure > 600) {
+    tucStatic = 9999999999; // safe
   } else if (pressure > 100) { 
-    tucStatic = 1.837 * pow(1.013, pressure); // approx.
+    tucStatic = 1.83 * exp(0.013 * pressure); // approx.
   } else {
-    tucStatic = 5;
+    tucStatic = 10;
   }
 
   // rapid ascent tuc decrease
   float penalty = 1.0;
   if (rateOfChange > 2.0) {
-    penalty = max(0.5f, 1.0f - (rateOfChange / 50.0f)); 
+    penalty = max(0.5, 1.0 - (rateOfChange / 50.0)); 
   }
 
   // combined formula
   float tucDynamic = tucStatic * penalty;
 
   // calculate pressure altitude in meters using barometric formula
-  float altitude = 44330.0 * (1.0 - pow(pressure / refPressure, 0.1903));
+  float ratio = pressure / refPressure;
+  float altitude = 44330.0 * (1.0 - exp(0.1903 * log(ratio)));
 
   Serial.println(millis());
   Serial.print("Pressure: ");
@@ -83,18 +84,18 @@ void loop() {
 
   Serial.print("Approx. TUC static: ");
   if (tucStatic > 3600) {
-    Serial.println("n/a");
+    Serial.println("unlimited");
   } else {
-    Serial.print(tucStatic);
-    Serial.println(" s ±20%");
+    Serial.print(formatTime(tucStatic));
+    Serial.println(" ±20%");
   }
 
   Serial.print("Approx. TUC dynamic: ");
   if (tucDynamic > 3600) {
-    Serial.println("n/a");
+    Serial.println("unlimited");
   } else {
-    Serial.print(tucDynamic);
-    Serial.println(" s ±20%");
+    Serial.print(formatTime(tucDynamic));
+    Serial.println(" ±20%");
   }
   
   astronaut.update(deltaTime, pressure, externalTemp, gForce);
