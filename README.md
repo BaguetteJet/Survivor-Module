@@ -2,7 +2,7 @@
 Rocket payload module to calculate survivability measures of high power flight.
 
 ## Hardware
-Using Arduino Nano microcontroller because combines a tiny form factor, different environment sensors and has the possibility to run AI using TinyML and TensorFlow Lite.
+Using Arduino Nano microcontroller because of its tiny form factor, environmental sensors and capability to run light AI using TinyML and TensorFlow Lite.
 - Aruino Nano 33 BLE Sense Rev2
   > LPS22HB - barometric pressure
 
