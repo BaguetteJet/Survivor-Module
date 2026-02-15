@@ -28,3 +28,17 @@ https://www.scribd.com/document/47260191/time-of-useful-consciousness
 https://skybrary.aero/articles/time-useful-consciousness   
 https://en.wikipedia.org/wiki/Time_of_useful_consciousness   
 https://stats.blue/Stats_Suite/exponential_regression_calculator.html   
+
+
+### Hypoxia
+
+sources:  
+https://en.wikipedia.org/wiki/Effects_of_high_altitude_on_humans   
+https://en.wikipedia.org/wiki/Oxygen_saturation_(medicine)   
+https://en.wikipedia.org/wiki/Oxygen%E2%80%93hemoglobin_dissociation_curve
+https://www.pilotmall.com/blogs/news/at-what-altitude-should-pilots-use-oxygen-it-s-lower-than-you-think   
+https://pmc.ncbi.nlm.nih.gov/articles/PMC7295717/  
+https://www.ncbi.nlm.nih.gov/books/NBK482268/   
+https://www.researchgate.net/publication/351632952_Hypoxic_Hypoxia_and_Brain_Function_in_Military_Aviation_Basic_Physiology_and_Applied_Perspectives   
+https://www.medanta.org/patient-education-blog/blood-oxygen-levels-everything-you-need-to-know   
+https://www.fai.org/sites/default/files/documents/6_4_4_fai_hypoxia_in_aviation.pdf
