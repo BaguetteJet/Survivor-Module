@@ -46,7 +46,7 @@ public:
         evaluateState(dt);
     }
 
-//private:
+private:
 
     // Hypoxia model
     void updateHypoxia(float dt, float pressure) {
@@ -58,36 +58,28 @@ public:
 
         // calculate inspired oxygen partial pressure
         float PiO2 = (PO2 - PH2O) * FiO2; // hPa
-        
+
         // calculate peripheral blood oxygen saturation
-        float SpO2 = 100.0 / (1.0 + exp(-0.0201 * (PiO2 - 50.9521))); // %
-    
-        // rate of change
-        float m = 1;               // rate of change modifier (0.02)
-        float changeRate = (SpO2 - bloodOxygen) * m;
+        float SpO2 = 99.0 / (1.0 + exp(-0.035 * (PiO2 - 69))); // %
 
         // update blood oxygen % SpO2 level
-        bloodOxygen += changeRate * dt;
+        bloodOxygen += (SpO2 - bloodOxygen) * 0.1 * dt; // 0.1 rate of change
 
         // limits
         if (bloodOxygen > 100) bloodOxygen = 100;
         if (bloodOxygen < 0) bloodOxygen = 0;
 
-        Serial.print("Oxygen: ");
+        Serial.print("Oxygen PiO2: ");
         Serial.print(PiO2);
-        Serial.println(" hPa PiO2");
+        Serial.println(" hPa");
 
-        Serial.print("Oxygen: ");
-        Serial.print(changeRate);
-        Serial.println(" % SpO2 rate");
+        Serial.print("Oxygen SpO2: ");
+        Serial.print(SpO2);
+        Serial.println(" % predicted");
         
-        Serial.print("Oxygen: ");
+        Serial.print("Oxygen SpO2: ");
         Serial.print(bloodOxygen);
-        Serial.println(" % SpO2");
-
-        Serial.print("Core Temp: ");
-        Serial.print(coreTemp);
-        Serial.println(" °C");
+        Serial.println(" % current");
     }
 
     // ---------------------------

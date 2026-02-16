@@ -54,10 +54,10 @@ void loop() {
   float tucStatic;
   if (pressure > 600) {
     tucStatic = 9999999999; // safe
-  } else if (pressure > 100) { 
-    tucStatic = 1.83 * exp(0.013 * pressure); // approx.
+  } else if (pressure > 125) { 
+    tucStatic = 1.486 * exp(0.0138 * pressure); // approx.
   } else {
-    tucStatic = 10;
+    tucStatic = 9;
   }
 
   // rapid ascent tuc decrease
