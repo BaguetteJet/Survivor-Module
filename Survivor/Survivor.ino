@@ -2,7 +2,7 @@
 #include "Human.h"
 
 Human astronaut;
-
+//
 // programmable variables
 float alpha = 0.6;                  // smoothing factor (0–1)
 float refPressure = 1013.25;        // hPa at avg. sea level
