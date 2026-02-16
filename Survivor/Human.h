@@ -71,7 +71,9 @@ private:
 
         Serial.print("Oxygen PiO2: ");
         Serial.print(PiO2);
-        Serial.println(" hPa");
+        Serial.print(" hPa | ");
+        Serial.print(PiO2 * 0.7500637);
+        Serial.println(" mmHg");
 
         Serial.print("Oxygen SpO2: ");
         Serial.print(SpO2);

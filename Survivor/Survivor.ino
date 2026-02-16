@@ -1,4 +1,6 @@
-#include <Arduino_LPS22HB.h> // pressure, alt temperature
+#include <Arduino_HS300x.h>   // humidity, temperature
+#include <Arduino_LPS22HB.h>  // pressure, temperature
+
 #include "Human.h"
 
 Human astronaut;
@@ -13,13 +15,19 @@ unsigned long lastTime = 0;         //
 
 // SensorData
 float hPa;                           // LPS22HB raw hPa pressure
-float pressure;                      // smooth hPa pressure
+float pressure;                      // LPS22HB smooth hPa pressure
+float temperature;                   // HS3003 raw °C temperature
+float humidity;                      // HS3003 raw % relative humidity
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
 
   // check sensors
+  if (!HS300x.begin()) {
+    Serial.println("[HS3003] Failed to initialize humidity temperature sensor!");
+    while (1);
+  }
   if (!BARO.begin()) {
     Serial.println("[LPS22HB] Failed to initialize pressure sensor!");
     while (1);
@@ -47,7 +55,6 @@ void loop() {
   float deltaTime = (currentTime - lastTime) / 1000.0;
   float rateOfChange = (lastPressure - pressure) / deltaTime; // positive = ascending
 
-  float externalTemp = -40;  // replace with sensor
   float gForce = 2.5;        // replace with IMU
 
   // static TUC estimate based on pressure in seconds (regression formula using TUC table)
@@ -70,17 +77,31 @@ void loop() {
   float tucDynamic = tucStatic * penalty;
 
   // calculate pressure altitude in meters using barometric formula
-  float ratio = pressure / refPressure;
-  float altitude = 44330.0 * (1.0 - exp(0.1903 * log(ratio)));
+  // altitude = ((pow((seaLevelPressure / pressure), 1/5.257) - 1.0) * (temperature + 273.15)) / 0.0065;
+  float altitude = (pow((refPressure / pressure), 0.190263) - 1.0) * (temperature + 273.15) * 153.84615;
+
 
   Serial.println(millis());
+
   Serial.print("Pressure: ");
   Serial.print(pressure);
-  Serial.println(" hPa");
+  Serial.print(" hPa | ");
+  Serial.print(pressure * 0.7500637);
+  Serial.println(" mmHg");
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
 
   Serial.print("Altitude: ");
   Serial.print(altitude);
-  Serial.println(" m");
+  Serial.print(" m | ");
+  Serial.print(altitude * 3.28084);
+  Serial.println(" ft");
 
   Serial.print("Approx. TUC static: ");
   if (tucStatic > 3600) {
@@ -98,7 +119,7 @@ void loop() {
     Serial.println(" ±20%");
   }
   
-  astronaut.update(deltaTime, pressure, externalTemp, gForce);
+  astronaut.update(deltaTime, pressure, temperature, gForce);
 
   lastPressure = pressure;
   lastTime = currentTime;

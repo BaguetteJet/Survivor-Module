@@ -5,6 +5,7 @@ Rocket payload module to calculate survivability measures of high power flight.
 Using Arduino Nano microcontroller because of its tiny form factor, environmental sensors and capability to run light AI using TinyML and TensorFlow Lite.
 - Aruino Nano 33 BLE Sense Rev2
   > LPS22HB - barometric pressure
+  > HS3003 - temperature, humidity
 
 ## Calculations
 Using the onboard environmental sensors we can calculate various measures in relation to human performance and survivability.
