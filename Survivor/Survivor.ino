@@ -59,7 +59,7 @@ void loop() {
 
   // static TUC estimate based on pressure in seconds (regression formula using TUC table)
   float tucStatic;
-  if (pressure > 600) {
+  if (pressure > 700) {
     tucStatic = 9999999999; // safe
   } else if (pressure > 125) { 
     tucStatic = 1.486 * exp(0.0138 * pressure); // approx.
@@ -83,7 +83,7 @@ void loop() {
 
   Serial.println(millis());
 
-  Serial.print("Pressure: ");
+  Serial.print("Pressure:    ");
   Serial.print(pressure);
   Serial.print(" hPa | ");
   Serial.print(pressure * 0.7500637);
@@ -93,18 +93,18 @@ void loop() {
   Serial.print(temperature);
   Serial.println(" °C");
 
-  Serial.print("Humidity: ");
+  Serial.print("Humidity:    ");
   Serial.print(humidity);
   Serial.println(" %");
 
-  Serial.print("Altitude: ");
+  Serial.print("Altitude:    ");
   Serial.print(altitude);
   Serial.print(" m | ");
   Serial.print(altitude * 3.28084);
   Serial.println(" ft");
 
   Serial.print("Approx. TUC static: ");
-  if (tucStatic > 3600) {
+  if (tucStatic > 99999) {
     Serial.println("unlimited");
   } else {
     Serial.print(formatTime(tucStatic));
@@ -112,7 +112,7 @@ void loop() {
   }
 
   Serial.print("Approx. TUC dynamic: ");
-  if (tucDynamic > 3600) {
+  if (tucDynamic > 99999) {
     Serial.println("unlimited");
   } else {
     Serial.print(formatTime(tucDynamic));

@@ -49,12 +49,17 @@ public:
 private:
 
     // Hypoxia model
+    // DONE 17/02/26 - update PH2O once body Thermal model agreed
+
     void updateHypoxia(float dt, float pressure) {
 
         // basic blood oxygen available model
         float PO2 = pressure;             // hPa barometric pressure
-        float PH2O = 62;                  // hPa water vapour pressure (62hPa at 37°C) -- UPDATE
+        float PH2O = 62.7;                // hPa water vapour pressure (62hPa at 37°C) -- UPDATE?
         float FiO2 = 0.21;                // 21% oxygen in air
+
+        // calculate hPa water vapour pressure at core body temperature using the Arden Buck equation T > 0 °C
+        //PH2O = 6.1121 * exp((18.678 - (coreTemp / 234.5)) * (coreTemp / (234.5 + coreTemp)))
 
         // calculate inspired oxygen partial pressure
         float PiO2 = (PO2 - PH2O) * FiO2; // hPa
@@ -68,6 +73,7 @@ private:
         // limits
         if (bloodOxygen > 100) bloodOxygen = 100;
         if (bloodOxygen < 0) bloodOxygen = 0;
+
 
         Serial.print("Oxygen PiO2: ");
         Serial.print(PiO2);
@@ -84,9 +90,26 @@ private:
         Serial.println(" % current");
     }
 
-    // ---------------------------
-    // Thermal model (heat loss)
-    // ---------------------------
+    void updateTUC(float dt) {
+        if (currentSpO2 > 90.0) {
+            // Recover TUC slowly if oxygen is restored
+            tucRemaining += dt * 0.5; 
+            if (tucRemaining > 1800.0) tucRemaining = 1800.0;
+        } 
+        else if (currentSpO2 <= 90.0 && currentSpO2 > 80.0) {
+            tucRemaining -= dt; // Standard drain
+        } 
+        else if (currentSpO2 <= 80.0 && currentSpO2 > 70.0) {
+            tucRemaining -= dt * 3.0; // Rapid drain
+        } 
+        else if (currentSpO2 <= 70.0) {
+            tucRemaining -= dt * 10.0; // Critical drain (Seconds left)
+        }
+
+        if (tucRemaining < 0) tucRemaining = 0;
+    }
+
+    // Thermal model
     void updateThermal(float dt, float externalTemp) {
 
         // simple Newton cooling
